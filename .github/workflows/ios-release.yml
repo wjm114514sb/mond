@@ -1,4 +1,4 @@
-name: build and release
+name: Build and release
 
 on:
   push:
@@ -15,36 +15,61 @@ concurrency:
 
 jobs:
   build-and-release:
-    runs-on: macos-latest
+    runs-on: macos-26
 
     steps:
-      - name: checkout
+      - name: Check out source
         uses: actions/checkout@v4
 
-      - name: install xcpretty
-        run: sudo gem install xcpretty
-
-      - name: build
+      - name: Show build environment
         run: |
-          set -euo pipefail
+          xcode-select -p
+          xcodebuild -version
+
+      - name: Resolve Swift packages
+        run: |
+          xcodebuild \
+            -resolvePackageDependencies \
+            -project mond.xcodeproj \
+            -scheme mond \
+            -clonedSourcePackagesDirPath "$PWD/build/SourcePackages"
+
+      - name: Build unsigned app
+        run: |
+          set -o pipefail
           xcodebuild \
             -project mond.xcodeproj \
             -scheme mond \
             -configuration Release \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
-            -derivedDataPath build \
+            -derivedDataPath "$PWD/build/DerivedData" \
+            -clonedSourcePackagesDirPath "$PWD/build/SourcePackages" \
             CODE_SIGNING_ALLOWED=NO \
-            build | xcpretty
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
 
-          rm -rf Payload mond.ipa
-          mkdir -p Payload
-          APP_PATH="$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name '*.app' -print -quit)"
-          cp -R "$APP_PATH" Payload/
-          ditto -c -k --keepParent Payload mond.ipa
-          rm -rf Payload
+      - name: Package IPA
+        run: |
+          set -euo pipefail
+          app_path="$PWD/build/DerivedData/Build/Products/Release-iphoneos/mond.app"
+          test -d "$app_path"
+          mkdir -p "$PWD/build/Payload"
+          cp -R "$app_path" "$PWD/build/Payload/mond.app"
+          /usr/bin/ditto -c -k --sequesterRsrc --keepParent \
+            "$PWD/build/Payload" \
+            "$PWD/build/mond-unsigned.ipa"
 
-      - name: release
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mond-unsigned-ipa
+          path: build/mond-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish latest release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -52,7 +77,7 @@ jobs:
           if gh release view latest >/dev/null 2>&1; then
             gh release delete latest --yes --cleanup-tag
           fi
-          gh release create latest mond.ipa \
+          gh release create latest "$PWD/build/mond-unsigned.ipa" \
             --target "${GITHUB_SHA}" \
-            --title "Latest" \
-            --notes "Automated build from ${GITHUB_SHA}"
+            --title "Latest unsigned IPA" \
+            --notes "Automated unsigned IPA build from ${GITHUB_SHA}"
