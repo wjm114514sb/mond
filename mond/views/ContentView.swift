@@ -46,11 +46,11 @@ struct ContentView: View {
                 if !mg_valid || mg_empty {
                     Section {
                         if mg_empty {
-                            PlainAlert(title: "Do not reboot!", icon: "exclamationmark.triangle.fill", text: "Your MobileGestalt.plist seems to be empty.", color: Color.yellow)
+                            PlainAlert(title: String(localized: "Do not reboot!"), icon: "exclamationmark.triangle.fill", text: String(localized: "Your MobileGestalt.plist seems to be empty."), color: Color.yellow)
                         }
                         
                         if !mg_valid {
-                            PlainAlert(title: "Do not reboot!", icon: "exclamationmark.triangle.fill", text: "Your MobileGestalt.plist seems to be invalid.", color: Color.yellow)
+                            PlainAlert(title: String(localized: "Do not reboot!"), icon: "exclamationmark.triangle.fill", text: String(localized: "Your MobileGestalt.plist seems to be invalid."), color: Color.yellow)
                         }
                     } header: {
                         Label("Warning", systemImage: "exclamationmark.triangle")
@@ -77,7 +77,7 @@ struct ContentView: View {
                 
                 Section {
                     Picker(selection: $subtype) {
-                        Text("Original (\(og_subtype))").tag(og_subtype)
+                        Text("\(String(localized: "Original")) (\(og_subtype))").tag(og_subtype)
                         if is_device_good() {
                             Text("Disable Dynamic Island").tag(2436)
                         }
@@ -112,42 +112,44 @@ struct ContentView: View {
                 
                 // basic tweak toggles
                 Section {
-                    PlainToggle(text: "Dynamic Island", minSupportedVersion: 19.0, isOn: mg_key_binding(["YlEtTtHlNesRBMal1CqRaA"]))
-                    PlainToggle(text: "Always On Display", minSupportedVersion: 18.0, isOn: mg_key_binding(["j8/Omm6s1lsmTDFsXjsBfA", "2OOJf1VhaM7NxfRok3HbWQ"]))
-                    PlainToggle(text: "AOD Vibrancy", minSupportedVersion: 18.0, isOn: mg_key_binding(["ykpu7qyhqFweVMKtxNylWA"]))
-                    PlainToggle(text: "Charge Limit", minSupportedVersion: 17.0, isOn: mg_key_binding(["37NVydb//GP/GrhuTN+exg"]))
-                    PlainToggle(text: "Boot Chime", isOn: mg_key_binding(["QHxt+hGLaBPbQJbXiUJX3w"]))
-                    PlainToggle(text: "Liquid Glass LPM", minSupportedVersion: 19.0, isOn: mg_key_binding(["SAGvsp6O6kAQ4fEfDJpC4Q"]))
+                    PlainToggle(text: String(localized: "Dynamic Island"), minSupportedVersion: 19.0, isOn: mg_key_binding(["YlEtTtHlNesRBMal1CqRaA"]))
+                    PlainToggle(text: String(localized: "Always On Display"), minSupportedVersion: 18.0, isOn: mg_key_binding(["j8/Omm6s1lsmTDFsXjsBfA", "2OOJf1VhaM7NxfRok3HbWQ"]))
+                    PlainToggle(text: String(localized: "AOD Vibrancy"), minSupportedVersion: 18.0, isOn: mg_key_binding(["ykpu7qyhqFweVMKtxNylWA"]))
+                    PlainToggle(text: String(localized: "Charge Limit"), minSupportedVersion: 17.0, isOn: mg_key_binding(["37NVydb//GP/GrhuTN+exg"]))
+                    PlainToggle(text: String(localized: "Boot Chime"), isOn: mg_key_binding(["QHxt+hGLaBPbQJbXiUJX3w"]))
+                    PlainToggle(text: String(localized: "Liquid Glass LPM"), minSupportedVersion: 19.0, isOn: mg_key_binding(["SAGvsp6O6kAQ4fEfDJpC4Q"]))
                 } header: {
                     Label("Software-Oriented Features", systemImage: "gearshape")
                 }
                 
                 Section {
-                    PlainToggle(text: "Camera Control", minSupportedVersion: 18.0, isOn: mg_key_binding(["CwvKxM2cEogD3p+HYgaW0Q", "oOV1jhJbdV3AddkcCg0AEA"]))
-                    PlainToggle(text: "Action Button", minSupportedVersion: 17.0, isOn: mg_key_binding(["cT44WE1EohiwRzhsZ8xEsw"]))
-                    PlainToggle(text: "Crash Detection", isOn: mg_key_binding(["HCzWusHQwZDea6nNhaKndw"]))
+                    PlainToggle(text: String(localized: "Camera Control"), minSupportedVersion: 18.0, isOn: mg_key_binding(["CwvKxM2cEogD3p+HYgaW0Q", "oOV1jhJbdV3AddkcCg0AEA"]))
+                    PlainToggle(text: String(localized: "Action Button"), minSupportedVersion: 17.0, isOn: mg_key_binding(["cT44WE1EohiwRzhsZ8xEsw"]))
+                    PlainToggle(text: String(localized: "Crash Detection"), isOn: mg_key_binding(["HCzWusHQwZDea6nNhaKndw"]))
                     if hasHomeButton() {
-                        PlainToggle(text: "Enable Tap to Wake", isOn: mg_key_binding(["yZf3GTRMGTuwSV/lD7Cagw"]))
+                        PlainToggle(text: String(localized: "Enable Tap to Wake"), isOn: mg_key_binding(["yZf3GTRMGTuwSV/lD7Cagw"]))
                     }
-                    PlainToggle(text: "Pulse Width Modulation", minSupportedVersion: 19.0, isOn: mg_key_binding(["6IejgN+1Fmu5/QrZFOIeNw"]))
+                    PlainToggle(text: String(localized: "Pulse Width Modulation"), minSupportedVersion: 19.0, isOn: mg_key_binding(["6IejgN+1Fmu5/QrZFOIeNw"]))
                 } header: {
                     Label("Hardware-Oriented Features", systemImage: "iphone")
                 }
                 
                 Section {
-                    PlainToggle(text: "Security Research Device UI", minSupportedVersion: 26.0, isOn: mg_key_binding(["XYlJKKkj2hztRP1NWWnhlw"]))
+                    PlainToggle(text: String(localized: "Security Research Device UI"), minSupportedVersion: 26.0, isOn: mg_key_binding(["XYlJKKkj2hztRP1NWWnhlw"]))
                     
                     PlainToggle(
-                        text: "Disable Region Restrictions",
+                        text: String(localized: "Disable Region Restrictions"),
                         infoType: .info,
-                        infoMessage: "This tweak may be broken or have no effect on some iOS versions or devices.",
+                        infoTitle: String(localized: "Information"),
+                        infoMessage: String(localized: "This tweak may be broken or have no effect on some iOS versions or devices."),
                         isOn: mg_region_restrict_binding()
                     )
                     
                     PlainToggle(
-                        text: "Apple Intelligence",
+                        text: String(localized: "Apple Intelligence"),
                         infoType: .info,
-                        infoMessage: "Apple Intelligence activation is currently broken and may not work.",
+                        infoTitle: String(localized: "Information"),
+                        infoMessage: String(localized: "Apple Intelligence activation is currently broken and may not work."),
                         minSupportedVersion: 18.1,
                         isOn: mg_key_binding(["A62OafQ85EJAiiqKn4agtg"])
                     )
@@ -182,8 +184,8 @@ struct ContentView: View {
                         
                         Button {
                             Alertinator.shared.alert(
-                                title: "Device Spoofing Info",
-                                body: "Only spoof your device model if you want to download Apple Intelligence. This may break Face ID. If you decide to unspoof and want to keep Apple Intelligence, do NOT re-enter the Apple Intelligence & Siri menu in Settings."
+                                title: String(localized: "Device Spoofing Info"),
+                                body: String(localized: "Only spoof your device model if you want to download Apple Intelligence. This may break Face ID. If you decide to unspoof and want to keep Apple Intelligence, do NOT re-enter the Apple Intelligence & Siri menu in Settings.")
                             )
                         } label: {
                             Image(systemName: "info.circle")
@@ -198,16 +200,17 @@ struct ContentView: View {
                 Section {
                     let cache_extra = mg_dict_now["CacheExtra"] as? NSMutableDictionary
                     
-                    PlainToggle(text: "Allow Installing iPadOS Apps", isOn: mg_key_binding(["9MZ5AdH43csAUajl/dU+IQ"], type: [Int].self, default_val: [1], on_val: [1, 2]))
-                    PlainToggle(text: "Apple Pencil Settings", isOn: mg_key_binding(["yhHcB0iH0d1XzPO/CFd3ow"]))
+                    PlainToggle(text: String(localized: "Allow Installing iPadOS Apps"), isOn: mg_key_binding(["9MZ5AdH43csAUajl/dU+IQ"], type: [Int].self, default_val: [1], on_val: [1, 2]))
+                    PlainToggle(text: String(localized: "Apple Pencil Settings"), isOn: mg_key_binding(["yhHcB0iH0d1XzPO/CFd3ow"]))
                     
                     if UIDevice.current.userInterfaceIdiom == .pad {
-                        PlainToggle(text: "Stage Manager", isOn: mg_key_binding(["qeaj75wk3HF4DwQ8qbIi7g"]))
+                        PlainToggle(text: String(localized: "Stage Manager"), isOn: mg_key_binding(["qeaj75wk3HF4DwQ8qbIi7g"]))
                     }
                     PlainToggle(
-                        text: "iPadOS UI",
+                        text: String(localized: "iPadOS UI"),
                         infoType: .warning,
-                        infoMessage: "This is a very dangerous tweak to use! If you use an alphanumeric passcode, DO NOT USE THIS TWEAK AT ALL! Please do not turn off \"Show Dock In Stage Manager\" or your device will BOOTLOOP when rotating to landscape! Some users have also reported that enabling the iPadOS UI and then tapping Stage Manager can cause the device to enter Recovery Mode, even when the UI itself appears unchanged. The Settings search bar may move to the top before this happens. With these three things in mind, you may experience general instability, or other major issues such as app data randomly disappearing. But I guess some funny multitasking features that still make the device relatively unusable are cool? Whatever dude, I'm not here to tell you how to use your own device.",
+                        infoTitle: String(localized: "Warning"),
+                        infoMessage: String(localized: "This is a very dangerous tweak to use! If you use an alphanumeric passcode, DO NOT USE THIS TWEAK AT ALL! Please do not turn off \"Show Dock In Stage Manager\" or your device will BOOTLOOP when rotating to landscape! Some users have also reported that enabling the iPadOS UI and then tapping Stage Manager can cause the device to enter Recovery Mode, even when the UI itself appears unchanged. The Settings search bar may move to the top before this happens. With these three things in mind, you may experience general instability, or other major issues such as app data randomly disappearing. But I guess some funny multitasking features that still make the device relatively unusable are cool? Whatever dude, I'm not here to tell you how to use your own device."),
                         isOn: mg_trollpad_binding()
                     )
                     .disabled(cache_extra?["+3Uf0Pm5F8Xy7Onyvko0vA"] as? String != "iPhone")
@@ -216,9 +219,9 @@ struct ContentView: View {
                 }
                 
                 Section {
-                    PlainToggle(text: "Internal Storage", isOn: mg_key_binding(["LBJfwOEzExRxzlAnSuI7eg"]))
-                    PlainToggle(text: "Internal Features", isOn: mg_internal_binding())
-                    PlainToggle(text: "Metal HUD in All Apps", isOn: mg_key_binding(["EqrsVvjcYDdxHBiQmGhAWw"]))
+                    PlainToggle(text: String(localized: "Internal Storage"), isOn: mg_key_binding(["LBJfwOEzExRxzlAnSuI7eg"]))
+                    PlainToggle(text: String(localized: "Internal Features"), isOn: mg_internal_binding())
+                    PlainToggle(text: String(localized: "Metal HUD in All Apps"), isOn: mg_key_binding(["EqrsVvjcYDdxHBiQmGhAWw"]))
                 } header: {
                     Label("Internal", systemImage: "ant")
                 }
@@ -259,9 +262,9 @@ struct ContentView: View {
         var errorDescription: String? {
             switch self {
             case .missingArtworkSubtype:
-                return "Failed to get ArtworkDeviceSubType!"
+                return String(localized: "Failed to get ArtworkDeviceSubType!")
             case .missingArtworkDeviceName:
-                return "Failed to get ArtworkDeviceProductDescription!"
+                return String(localized: "Failed to get ArtworkDeviceProductDescription!")
             }
         }
     }
@@ -308,7 +311,7 @@ struct ContentView: View {
             }
         } catch {
             print("(mg) failed to load data: \(error)")
-            Alertinator.shared.alert(title: "Failed to load current MobileGestalt!", body: "Restart the app and try again. Check logs for more detailed information.")
+            Alertinator.shared.alert(title: String(localized: "Failed to load current MobileGestalt!"), body: String(localized: "Restart the app and try again. Check logs for more detailed information."))
         }
     }
     
@@ -332,12 +335,12 @@ struct ContentView: View {
             enable_devicename = false
 
             print("(mg) successfully overwrote mobilegestalt!")
-            Alertinator.shared.alert(title: "Successfully applied Gestalt tweaks!", body: "Respring your device for changes to take effect. Note that some tweaks may require a reboot for them to apply properly.", actionLabel: "Respring", action: {
+            Alertinator.shared.alert(title: String(localized: "Successfully applied Gestalt tweaks!"), body: String(localized: "Respring your device for changes to take effect. Note that some tweaks may require a reboot for them to apply properly."), actionLabel: String(localized: "Respring"), action: {
                 state.respring()
             })
         } catch {
             print("(mg) failed to apply mobilegestalt: \(error)")
-            Alertinator.shared.alert(title: "Failed to apply MobileGestalt!", body: "Restart the app and try again. Check logs for more detailed information.")
+            Alertinator.shared.alert(title: String(localized: "Failed to apply MobileGestalt!"), body: String(localized: "Restart the app and try again. Check logs for more detailed information."))
         }
     }
     
@@ -348,11 +351,11 @@ struct ContentView: View {
             try mg_write(backup_data)
 
             print("(mg) successfully reverted mobilegestalt!)")
-            Alertinator.shared.alert(title: "Successfully reverted Gestalt tweaks!", body: "Reboot your device for changes to take effect.")
+            Alertinator.shared.alert(title: String(localized: "Successfully reverted Gestalt tweaks!"), body: String(localized: "Reboot your device for changes to take effect."))
         } catch {
             // The direct file write path now surfaces the underlying error through the catch.
             print("(mg) failed to revert mobilegestalt: \(error)")
-            Alertinator.shared.alert(title: "Failed to revert MobileGestalt!", body: "Check logs for error information.")
+            Alertinator.shared.alert(title: String(localized: "Failed to revert MobileGestalt!"), body: String(localized: "Check logs for error information."))
         }
     }
 
@@ -418,7 +421,7 @@ struct ContentView: View {
             return false
         }, set: { enabled in
             if enabled {
-                Alertinator.shared.alert(title: "Warning!", body: "This is a very dangerous tweak to use! If you use an alphanumeric passcode, DO NOT USE THIS TWEAK AT ALL! Please do not turn off \"Show Dock In Stage Manager\" or your device will BOOTLOOP when rotating to landscape! With these two things in mind, you may experience general instability, or other major issues such as app data randomly disappearing. I'm honestly not too certain why you'd want to use this tweak anyways, it's not like your device is gonna be all that usable (due to apps scaling weirdly) when it's enabled.")
+                Alertinator.shared.alert(title: String(localized: "Warning!"), body: String(localized: "This is a very dangerous tweak to use! If you use an alphanumeric passcode, DO NOT USE THIS TWEAK AT ALL! Please do not turn off \"Show Dock In Stage Manager\" or your device will BOOTLOOP when rotating to landscape! With these two things in mind, you may experience general instability, or other major issues such as app data randomly disappearing. I'm honestly not too certain why you'd want to use this tweak anyways, it's not like your device is gonna be all that usable (due to apps scaling weirdly) when it's enabled."))
             }
             
             cache_data.mutableBytes.storeBytes(of: enabled ? 3 : 1, toByteOffset: value_off, as: Int.self)
@@ -445,7 +448,7 @@ struct ContentView: View {
             },
             set: { enabled in
                 if enabled {
-                    Alertinator.shared.alert(title: "Warning!", body: "Please do not use this feature to bypass region restrictions that would equate to breaking regional laws (e.g. disabling the camera shutter sound). We will NOT be held responsible for enabling any illegal activites!")
+                    Alertinator.shared.alert(title: String(localized: "Warning!"), body: String(localized: "Please do not use this feature to bypass region restrictions that would equate to breaking regional laws (e.g. disabling the camera shutter sound). We will NOT be held responsible for enabling any illegal activites!"))
                     cache_extra["h63QSdBCiT/z0WU6rdQv6Q"] = "US"
                     cache_extra["zHeENZu+wbg7PUprwNwBWg"] = "LL/A"
                 } else {

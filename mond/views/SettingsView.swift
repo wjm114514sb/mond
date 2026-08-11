@@ -84,8 +84,8 @@ struct SettingsView: View {
                         }
                     }
                     .contextMenu {
-                        Text("Class: \(token.split(separator: ";").first { $0.contains("com.apple") }.map(String.init) ?? "N/A")")
-                        Text("Path: \(token.split(separator: ";").last.map(String.init) ?? "N/A")")
+                        Text("\(String(localized: "Class")): \(token.split(separator: ";").first { $0.contains("com.apple") }.map(String.init) ?? "N/A")")
+                        Text("\(String(localized: "Path")): \(token.split(separator: ";").last.map(String.init) ?? "N/A")")
                         
                         Button {
                             UIPasteboard.general.string = token
@@ -146,10 +146,10 @@ struct SettingsView: View {
                 }
                 
                 Section {
-                    CreditsRow(name: "roooot", role: "Main developer", profile: URL(string: "https://github.com/rooootdev")!)
-                    CreditsRow(name: "forcequit", role: "The bad_query exploit", profile: URL(string: "https://github.com/forcequitOS")!)
-                    CreditsRow(name: "johnny", role: "His work on the MCM bug class", profile: URL(string: "https://github.com/0xjohnnydev")!)
-                    CreditsRow(name: "jailbreak.party", role: "PartyUI, GestaltView", profile: URL(string: "https://github.com/jailbreakdotparty")!)
+                    CreditsRow(name: "roooot", role: String(localized: "Main developer"), profile: URL(string: "https://github.com/rooootdev")!)
+                    CreditsRow(name: "forcequit", role: String(localized: "The bad_query exploit"), profile: URL(string: "https://github.com/forcequitOS")!)
+                    CreditsRow(name: "johnny", role: String(localized: "His work on the MCM bug class"), profile: URL(string: "https://github.com/0xjohnnydev")!)
+                    CreditsRow(name: "jailbreak.party", role: String(localized: "PartyUI, GestaltView"), profile: URL(string: "https://github.com/jailbreakdotparty")!)
                 } header: {
                     Label("Credits", systemImage: "person.3.fill")
                 }

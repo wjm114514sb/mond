@@ -1,0 +1,70 @@
+name: Build unsigned IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "mond/**"
+      - "mond.xcodeproj/**"
+      - ".github/workflows/build-ipa.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Show build environment
+        run: |
+          xcode-select -p
+          xcodebuild -version
+
+      - name: Resolve Swift packages
+        run: |
+          xcodebuild \
+            -resolvePackageDependencies \
+            -project mond.xcodeproj \
+            -scheme mond \
+            -clonedSourcePackagesDirPath "$PWD/build/SourcePackages"
+
+      - name: Build unsigned app
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project mond.xcodeproj \
+            -scheme mond \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination "generic/platform=iOS" \
+            -derivedDataPath "$PWD/build/DerivedData" \
+            -clonedSourcePackagesDirPath "$PWD/build/SourcePackages" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Package IPA
+        run: |
+          set -euo pipefail
+          app_path="$PWD/build/DerivedData/Build/Products/Release-iphoneos/mond.app"
+          test -d "$app_path"
+          mkdir -p "$PWD/build/Payload"
+          cp -R "$app_path" "$PWD/build/Payload/mond.app"
+          /usr/bin/ditto -c -k --sequesterRsrc --keepParent \
+            "$PWD/build/Payload" \
+            "$PWD/build/mond-unsigned.ipa"
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mond-unsigned-ipa
+          path: build/mond-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 14

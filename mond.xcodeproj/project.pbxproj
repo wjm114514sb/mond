@@ -97,6 +97,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				zh-Hans,
 				Base,
 			);
 			mainGroup = CCF44B36300858B300739BFC;
